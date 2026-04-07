@@ -1,0 +1,73 @@
+import { assets, menuLinks } from "../assets/assets";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+const Navbar = ({ setShowLogin }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32
+    py-4 text-gray-600 border-b border-borderColor relative transition-all  
+    ${location.pathname === "/" && "bg-light"}
+    `}
+    >
+      <Link to="/">
+        <img src={assets.logo} alt="logo" className="h-8" />
+      </Link>
+      <div
+        className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 max-sm:border-t
+        flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 right-0 border-borderColor
+        max-sm:p-4 transition-all duration-300 z-50 ${location.pathname === "/" ? "bg-light" : "bg-white"}
+        ${open ? "max-sm:translate-x-0" : "max-sm:translate-x-full"}
+
+      `}
+      >
+        {menuLinks.map((link, index) => (
+          <Link to={link.path} key={index}>
+            {link.name}
+          </Link>
+        ))}
+        <div
+          className="hidden lg:flex items-center text-sm border
+         px-3 border-borderColor max-w-56 rounded-full
+         "
+        >
+          <input
+            type="text"
+            placeholder="Search Products"
+            className="w-full bg-transparent py-1.5 outline-none
+          placeholder:text-gray-500 
+          "
+          />
+          <img src={assets.search_icon} alt="search" />
+        </div>
+        <div className="flex max-sm:flex-col gap-6 items-start sm:items-center">
+          <button onClick={() => navigate("/")} className="cursor-pointer">
+            Dashboard
+          </button>
+          <button
+            onClick={() => setShowLogin(true)}
+            className="cursor-pointer px-8 py-2
+          bg-primary hover:bg-primary-dull transition-all
+          rounded-lg text-white
+          "
+          >
+            Login
+          </button>
+        </div>
+      </div>
+
+      <button
+        className="sm:hidden cursor-pointer"
+        aria-label="Menu"
+        onClick={() => setOpen(!open)}
+      >
+        <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
+      </button>
+    </div>
+  );
+};
+
+export default Navbar;
